@@ -1,6 +1,7 @@
 package com.example.appmasacorporal
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -9,6 +10,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,12 +36,13 @@ class MainActivity : AppCompatActivity() {
                 textViewResultado.text="Uno de los datos se encuentra vació"
             } else {
                 val bmi = weight / (height * height)
+                Log.e("Error",""+bmi)
                 // Cambia las dos varibles, teniendo en cuenta la condición y de acuerdo a eso, asigna a bmiCategoria, imageResoursce carga la imagén
                 val (bmiCategory, imageResource) = when {
-                    bmi < 18.5 -> "Adelgazamiento" to R.drawable.bajopeso
-                    bmi in 18.5..24.9 -> "Peso Normal" to R.drawable.normalpeso
-                    bmi in 25.0..29.9 -> "Sobrepeso" to R.drawable.sobrepeso
-                    bmi >= 30.0 -> "Obesidad" to R.drawable.obesidadpeso
+                    bmi < 18.49 -> "Adelgazamiento" to R.drawable.bajopeso
+                    bmi in 18.49..24.9 -> "Peso Normal" to R.drawable.normalpeso
+                    bmi in 24.9..29.9 -> "Sobrepeso" to R.drawable.sobrepeso
+                    bmi >= 29.9-> "Obesidad" to R.drawable.obesidadpeso
                     else -> "Valor de IMC no válido" to 0
                 }
 
@@ -50,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                     imageViewResultado.setImageResource(imageResource)
                 } else {
                     // imageViewResultado.setImageDrawable(null)
-                    textViewResultado.text = "Los datos ingresado son incorrectos, lo sentimos :c"
+                    textViewResultado.text = "Los datos ingresado son ncorrectos, lo sentimos :c"
                 }
             }
         }
