@@ -1,0 +1,38 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:background="@color/background_color">
+
+    <!-- Imagen del logo de la app -->
+    <ImageView
+        android:id="@+id/oms_logo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_app_logo"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Campo de entrada de la contraseña -->
+    <EditText
+        android:id="@+id/passwordField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_password"
+        android:inputType="textPassword"
+        android:backgroundTint="@color/text_primary"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:elevation="2dp"
+        android:textColor="@color/text_primary"
+        android:textColorHint="@color/hint_color" />
+
+    <!-- Botón de inicio de sesión -->
+    <Button
+        android:id="@+id/loginButton"
+        style="@style/MyButtonStyle"
+        android:text="@string/login" />
+
+</LinearLayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">appMasaCorporal</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="login">Login in</string>
+    <string name="incorrect_password">Incorrect password, please try again</string>
+    <string name="hint_altura">Height (cm)</string>
+    <string name="hint_peso">Weight (kg)</string>
+    <string name="boton_calcular">Calculate BMI</string>
+    <string name="resultado">Result</string>
+    <string name="welcome_message">Hello, welcome</string>
+    <string name="loading_message">We are loading...</string>
+</resources>
