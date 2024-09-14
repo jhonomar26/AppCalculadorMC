@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">appMasaCorporal</string>
+    <string name="enter_password">Ingresa tu contraseña</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="incorrect_password">Contraseña incorrecta, por favor intenta de nuevo</string>
+    <string name="hint_altura">Altura (cm)</string>
+    <string name="hint_peso">Peso (kg)</string>
+    <string name="boton_calcular">Calcular IMC</string>
+    <string name="resultado">Resultado</string>
+    <string name="welcome_message">Hola, bienvenido</string>
+    <string name="loading_message">Estamos cargando...</string>
+
 </resources>
