@@ -12,6 +12,12 @@ class LoginActivity : AppCompatActivity() {
 
         val loginButton = findViewById<Button>(R.id.loginButton)
         val passwordField = findViewById<EditText>(R.id.passwordField)
+        val aboutButton = findViewById<Button>(R.id.about_button)
+
+        aboutButton.setOnClickListener {
+            val intent = Intent(this, AboutActivity::class.java)
+            startActivity(intent)
+        }
 
         // Configuración del botón de login
         loginButton.setOnClickListener {
