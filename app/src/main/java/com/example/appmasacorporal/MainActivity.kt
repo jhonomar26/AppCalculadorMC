@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
     private fun updateUI(bmi: Double, textViewResultado: TextView, imageViewResultado: ImageView) {
         // Evalúa el valor del IMC y determina la categoría correspondiente y la imagen asociada
         val (bmiCategory, imageResource) = when {
-            bmi < 18.49 -> "Adelgazamiento" to R.drawable.bajopeso    // IMC menor a 18.49: categoría de bajo peso
+            bmi < 18.49 -> "Bajo peso" to R.drawable.bajopeso    // IMC menor a 18.49: categoría de bajo peso
             bmi in 18.49..24.9 -> "Peso normal" to R.drawable.normalpeso // IMC entre 18.49 y 24.9: peso normal
             bmi in 24.9..29.9 -> "Sobrepeso" to R.drawable.sobrepeso     // IMC entre 24.9 y 29.9: sobrepeso
             bmi >= 29.9 -> "Obesidad" to R.drawable.obesidadpeso         // IMC mayor o igual a 29.9: obesidad

@@ -22,14 +22,14 @@ class SplashActivity : AppCompatActivity() {
         logo.alpha = 0f
         text.alpha = 0f
         //Campia la opacidad de la imagen de 0 a 1 en 2 segundos
-        logo.animate().alpha(1f).setDuration(3000).start()
-        text.animate().alpha(1f).setDuration(3000).start()
+        logo.animate().alpha(1f).setDuration(1500).start()
+        text.animate().alpha(1f).setDuration(1500).start()
 
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
-        }, 6000)
+        }, 3000)
     }
 
 }

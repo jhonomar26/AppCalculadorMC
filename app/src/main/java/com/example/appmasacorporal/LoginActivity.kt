@@ -4,17 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-
+//Hereda de la clase AppCompatActivity
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
+        //Referenciar componenetes
         val loginButton = findViewById<Button>(R.id.loginButton)
         val passwordField = findViewById<EditText>(R.id.passwordField)
 
-        // Configuración del botón de login
+        //Ejecución del boton una vez se le de click
         loginButton.setOnClickListener {
+            //Se trae la contraseña ingresado por el usuario
             val enteredPassword = passwordField.text.toString()
 
             // Validación de contraseña

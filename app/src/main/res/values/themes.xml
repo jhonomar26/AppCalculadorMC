@@ -3,7 +3,15 @@
     <style name="Base.Theme.AppMasaCorporal" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+            <!-- Personaliza los colores primarios y secundarios -->
+            <item name="colorPrimary">@color/primary</item>
+            <item name="colorPrimaryVariant">@color/primary_dark</item>
+            <item name="colorOnPrimary">@color/white</item>
+            <item name="colorSecondary">@color/secondary</item>
+            <item name="colorSecondaryVariant">@color/secondary_dark</item>
+            <item name="colorOnSecondary">@color/black</item>
     </style>
 
     <style name="Theme.AppMasaCorporal" parent="Base.Theme.AppMasaCorporal" />
+
 </resources>
