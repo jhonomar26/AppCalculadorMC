@@ -10,4 +10,8 @@
     <string name="resultado">Result</string>
     <string name="welcome_message">Hello, welcome</string>
     <string name="loading_message">We are loading...</string>
+    <string name="about_button_text">About us</string>
+    <string name="about_info">This is an application to calculate Body Mass Index (BMI), based on WHO recommendations.</string>
+    <string name="about_author">"Developed by Omar Hualpa. "</string>
+
 </resources>

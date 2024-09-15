@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -22,14 +23,13 @@ class SplashActivity : AppCompatActivity() {
         logo.alpha = 0f
         text.alpha = 0f
         //Campia la opacidad de la imagen de 0 a 1 en 2 segundos
-        logo.animate().alpha(1f).setDuration(1500).start()
-        text.animate().alpha(1f).setDuration(1500).start()
-
+        logo.animate().alpha(1f).setDuration(3000).start()
+        text.animate().alpha(1f).setDuration(3000).start()
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
-        }, 3000)
+        }, 6000)
     }
 
 }
