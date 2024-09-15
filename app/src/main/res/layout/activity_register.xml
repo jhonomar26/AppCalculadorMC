@@ -49,13 +49,10 @@
         style="@style/MyButtonStyle"
         android:text="@string/register" />
 
-    <!-- Enlace para volver a la pantalla de inicio de sesión -->
-    <TextView
+    <Button
         android:id="@+id/backToLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/back_to_login"
-        android:textColor="@color/primary"
-        android:textSize="16sp" />
+        style="@style/MyButtonStyle2"
+        android:text="@string/back_to_login" />
+
+    <!-- Enlace para volver a la pantalla de inicio de sesión -->
 </LinearLayout>

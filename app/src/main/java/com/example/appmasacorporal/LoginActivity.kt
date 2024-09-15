@@ -29,18 +29,12 @@ class LoginActivity : AppCompatActivity() {
         val aboutButton = findViewById<Button>(R.id.aboutButton)
         val registerButton = findViewById<Button>(R.id.registerButton)
         val dbHelper = DatabaseHelper(this)
-
         val users = dbHelper.getAllUsers()
-
+        //Recorrido de todos los usuarios en la base de datos
         for (user in users) {
             println("ID: ${user["id"]}, Username: ${user["username"]}, Password: ${user["password"]}")
         }
-
-
-
-
-
-
+        //dbHelper.deleteAllUsers()
         // Abrir la actividad "Acerca de"
         aboutButton.setOnClickListener {
             val intent = Intent(this, AboutActivity::class.java)

@@ -2,8 +2,10 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import java.security.MessageDigest
 
-class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class DatabaseHelper(context: Context) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
 
@@ -26,7 +28,15 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val COL_IMC = "imc"
         private const val COL_CONCEPT = "concept"
     }
+
     //Esto solo se ejecutara la primera vez, para crear la base de datos
+    private fun hashPassword(password: String): String {
+        val md = MessageDigest.getInstance("SHA-256")
+        val hash = md.digest(password.toByteArray())
+        return hash.joinToString("") { "%02x".format(it) }
+    }
+
+
     override fun onCreate(db: SQLiteDatabase?) {
         // Crear tabla de usuarios
         val createUsersTable = ("CREATE TABLE $TABLE_USERS ("
@@ -48,6 +58,13 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db?.execSQL(createUsersTable)
         db?.execSQL(createHistoryTable)
     }
+
+    fun deleteAllUsers(): Int {
+        val db = this.writableDatabase
+        // Ejecutar el delete sin cláusula WHERE eliminará todos los usuarios
+        return db.delete(TABLE_USERS, null, null)
+    }
+
 
     fun getAllUsers(): List<Map<String, String>> {
         val db = this.readableDatabase
@@ -83,13 +100,20 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val db = this.writableDatabase
         val contentValues = ContentValues().apply {
             put(COL_USERNAME, username)
-            put(COL_PASSWORD, password)
+            put(COL_PASSWORD, hashPassword(password))  // Guardar la contraseña hasheada
         }
         return db.insert(TABLE_USERS, null, contentValues)
     }
 
     // Insertar historial de IMC
-    fun insertIMCHistory(userId: Int, dateTime: String, weight: Double, height: Double, imc: Double, concept: String): Long {
+    fun insertIMCHistory(
+        userId: Int,
+        dateTime: String,
+        weight: Double,
+        height: Double,
+        imc: Double,
+        concept: String
+    ): Long {
         val db = this.writableDatabase
         val contentValues = ContentValues().apply {
             put(COL_USER_ID_FK, userId)
@@ -104,15 +128,15 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     // Validar usuario: Existe o no :D
     fun validateUser(username: String, password: String): Boolean {
-        //Base de datos en modo lectura
         val db = this.readableDatabase
+        val hashedPassword = hashPassword(password)  // Hashear la contraseña ingresada
         val query = "SELECT * FROM $TABLE_USERS WHERE $COL_USERNAME = ? AND $COL_PASSWORD = ?"
-        //En caso de que sea valido, el cursor devolvera el valor de los datos consultados, en caso de que no, sera sero
-        val cursor = db.rawQuery(query, arrayOf(username, password))
+        val cursor = db.rawQuery(query, arrayOf(username, hashedPassword))
         val isValid = cursor.count > 0
         cursor.close()
         return isValid
     }
+
 
     // Obtener historial de IMC: Lista de los registros históricos asociados a ese usuario.
     fun getIMCHistory(userId: Int): List<Map<String, String>> {
@@ -126,8 +150,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 //HistoryItem: es un diccionario (clave, valor)
                 val historyItem = mapOf(
                     "date_time" to cursor.getString(cursor.getColumnIndexOrThrow(COL_DATE_TIME)),
-                    "weight" to cursor.getDouble(cursor.getColumnIndexOrThrow(COL_WEIGHT)).toString(),
-                    "height" to cursor.getDouble(cursor.getColumnIndexOrThrow(COL_HEIGHT)).toString(),
+                    "weight" to cursor.getDouble(cursor.getColumnIndexOrThrow(COL_WEIGHT))
+                        .toString(),
+                    "height" to cursor.getDouble(cursor.getColumnIndexOrThrow(COL_HEIGHT))
+                        .toString(),
                     "imc" to cursor.getDouble(cursor.getColumnIndexOrThrow(COL_IMC)).toString(),
                     "concept" to cursor.getString(cursor.getColumnIndexOrThrow(COL_CONCEPT))
                 )
