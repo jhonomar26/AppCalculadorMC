@@ -13,5 +13,10 @@
     <string name="about_button_text">About us</string>
     <string name="about_info">This is an application to calculate Body Mass Index (BMI), based on WHO recommendations.</string>
     <string name="about_author">"Developed by Omar Hualpa. "</string>
+    <string name="enter_username">Enter Username</string>
+    <string name="incorrect_credentials">Sorry, your username or password is incorrect</string>
+    <string name="fill_all_fields">Please fill in the username and password fields</string>
+    <string name="register">Register</string>
+    <string name="back_to_login">Back to login</string>
 
 </resources>

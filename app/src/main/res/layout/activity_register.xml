@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -42,27 +43,19 @@
         android:textColor="@color/text_primary"
         android:textColorHint="@color/hint_color" />
 
-    <!-- Botón de inicio de sesión -->
-    <Button
-        android:id="@+id/loginButton"
-        style="@style/MyButtonStyle"
-        android:text="@string/login" />
-
     <!-- Botón de registro -->
     <Button
         android:id="@+id/registerButton"
         style="@style/MyButtonStyle"
-        android:text="@string/register"
+        android:text="@string/register" />
 
-        />
-
-    <!-- Botón de "Acerca de" -->
-    <Button
-        android:id="@+id/aboutButton"
-        android:layout_width="match_parent"
+    <!-- Enlace para volver a la pantalla de inicio de sesión -->
+    <TextView
+        android:id="@+id/backToLogin"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="@color/red"
-        android:text="@string/about_button_text"
-        android:textColor="@color/white" />
+        android:layout_marginTop="16dp"
+        android:text="@string/back_to_login"
+        android:textColor="@color/primary"
+        android:textSize="16sp" />
 </LinearLayout>

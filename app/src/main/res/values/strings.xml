@@ -12,4 +12,10 @@
     <string name="about_button_text">Acerca de</string>
     <string name="about_author">Desarrollado por Omar Hualpa.</string>
     <string name="about_info">Esta es una aplicación para calcular el Índice de Masa Corporal (IMC), basada en las recomendaciones de la OMS.</string>
+    <string name="enter_username">Ingrese su usuario</string>
+    <string name="incorrect_credentials">"Lo sentimos, su usuario o contraseña son incorrectos "</string>
+    <string name="fill_all_fields">Por favor, lleno los campos de usuario y contraseña</string>
+    <string name="register">Registrarse</string>
+    <string name="back_to_login">Volver al inicio de sesión</string>
+
 </resources>
