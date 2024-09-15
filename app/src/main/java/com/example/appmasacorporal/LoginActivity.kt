@@ -12,7 +12,7 @@ class LoginActivity : AppCompatActivity() {
         //Referenciar componenetes
         val loginButton = findViewById<Button>(R.id.loginButton)
         val passwordField = findViewById<EditText>(R.id.passwordField)
-        val aboutButton = findViewById<Button>(R.id.about_button)
+        val aboutButton = findViewById<Button>(R.id.aboutButton)
 
         aboutButton.setOnClickListener {
             val intent = Intent(this, AboutActivity::class.java)
