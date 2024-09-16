@@ -1,5 +1,6 @@
 package com.example.appmasacorporal
 
+import DatabaseHelper
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +10,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 class SplashActivity : AppCompatActivity() {
+    private lateinit var databaseHelper: DatabaseHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
@@ -22,8 +25,17 @@ class SplashActivity : AppCompatActivity() {
         logo.animate().alpha(1f).setDuration(3000).start()
         text.animate().alpha(1f).setDuration(3000).start()
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            databaseHelper = DatabaseHelper(this)
+            // Verificar si el usuario está autenticado
+            if (databaseHelper.getAuthenticatedUserId() != null) {
+                // Si está autenticado, dirigir a MainActivity
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            } else {
+                // Si no está autenticado, dirigir a LoginActivity
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
             finish()
         }, 6000)
     }

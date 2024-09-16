@@ -12,4 +12,6 @@
     <color name="secondary">#03DAC6</color>
     <color name="secondary_dark">#018786</color>
     <color name="red">#FA8072</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorAccent">#FF4081</color>
 </resources>

@@ -1,5 +1,7 @@
 package com.example.appmasacorporal
 
+import DatabaseHelper
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -8,8 +10,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import java.util.Date
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var databaseHelper: DatabaseHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Habilita la opción de que la aplicación use el modo de pantalla completa, eliminando los bordes
@@ -29,6 +35,19 @@ class MainActivity : AppCompatActivity() {
             findViewById(R.id.textViewResultado) // Texto para mostrar el resultado del IMC
         val imageViewResultado: ImageView =
             findViewById(R.id.imageViewResult)  // Imagen que cambia según la categoría del IMC
+
+        databaseHelper = DatabaseHelper(this)
+
+        // Botón de cerrar sesión
+        val logoutButton = findViewById<Button>(R.id.botonCerrarSesion)
+        logoutButton.setOnClickListener {
+            // Cerrar sesión
+            databaseHelper.clearAuthenticatedUser()
+            // Redirigir a la pantalla de Login
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         // Establece un listener para el botón, que responde al hacer clic
         btnCalcular.setOnClickListener {
@@ -50,6 +69,25 @@ class MainActivity : AppCompatActivity() {
                 val bmi = weight / (height * height)
                 // Llama a la función `updateUI` para mostrar los resultados en la interfaz
                 updateUI(bmi, textViewResultado, imageViewResultado)
+                // Guardar el historial en la base de datos
+                // Obtener la fecha y hora actual
+
+                // Obtener la fecha y hora actual
+                val currentDateTime =
+                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+
+                // Determinar el concepto según el IMC
+                val concept = when {
+                    bmi < 18.49 -> "Bajo peso"
+                    bmi in 18.49..24.9 -> "Peso normal"
+                    bmi in 24.9..29.9 -> "Sobrepeso"
+                    else -> "Obesidad"
+                }
+
+                // Guardar el historial en la base de datos
+                val dbHelper = DatabaseHelper(this)
+                val userId = 1  // Aquí deberías obtener el ID del usuario autenticado
+                dbHelper.insertIMCHistory(userId, currentDateTime, weight, height, bmi, concept)
             }
         }
     }
@@ -85,4 +123,6 @@ class MainActivity : AppCompatActivity() {
         // Muestra un mensaje corto que indica el error ocurrido
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
+
 }

@@ -6,6 +6,8 @@ import java.security.MessageDigest
 
 class DatabaseHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+    // Variable para almacenar el ID del usuario autenticado
+    private var authenticatedUserId: Int? = null
 
     companion object {
 
@@ -29,14 +31,10 @@ class DatabaseHelper(context: Context) :
         private const val COL_CONCEPT = "concept"
     }
 
+    //Funcion para devolver el hash de acuerdo a la contraseña
+
+
     //Esto solo se ejecutara la primera vez, para crear la base de datos
-    private fun hashPassword(password: String): String {
-        val md = MessageDigest.getInstance("SHA-256")
-        val hash = md.digest(password.toByteArray())
-        return hash.joinToString("") { "%02x".format(it) }
-    }
-
-
     override fun onCreate(db: SQLiteDatabase?) {
         // Crear tabla de usuarios
         val createUsersTable = ("CREATE TABLE $TABLE_USERS ("
@@ -95,7 +93,7 @@ class DatabaseHelper(context: Context) :
         onCreate(db)
     }
 
-    // Insertar usuario
+    // Insertar usuario, en lugar de guardar la contraseña lo que se guarda es su hash
     fun insertUser(username: String, password: String): Long {
         val db = this.writableDatabase
         val contentValues = ContentValues().apply {
@@ -127,12 +125,20 @@ class DatabaseHelper(context: Context) :
     }
 
     // Validar usuario: Existe o no :D
+    // Validar usuario y guardar el ID si la autenticación es exitosa
     fun validateUser(username: String, password: String): Boolean {
         val db = this.readableDatabase
         val hashedPassword = hashPassword(password)  // Hashear la contraseña ingresada
-        val query = "SELECT * FROM $TABLE_USERS WHERE $COL_USERNAME = ? AND $COL_PASSWORD = ?"
+        val query = "SELECT $COL_USER_ID FROM $TABLE_USERS WHERE $COL_USERNAME = ? AND $COL_PASSWORD = ?"
         val cursor = db.rawQuery(query, arrayOf(username, hashedPassword))
-        val isValid = cursor.count > 0
+
+        // Si el usuario es válido, guarda su ID
+        val isValid = if (cursor.moveToFirst()) {
+            authenticatedUserId = cursor.getInt(cursor.getColumnIndexOrThrow(COL_USER_ID))
+            true
+        } else {
+            false
+        }
         cursor.close()
         return isValid
     }
@@ -166,5 +172,27 @@ class DatabaseHelper(context: Context) :
         return historyList
     }
 
+
+
+    // Obtener el ID del usuario autenticado
+    fun getAuthenticatedUserId(): Int? {
+        return authenticatedUserId
+    }
+
+    private fun hashPassword(password: String): String {
+        val md = MessageDigest.getInstance("SHA-256")
+        val hash = md.digest(password.toByteArray())
+        return hash.joinToString("") { "%02x".format(it) }
+    }
+
+    // Obtener historial de IMC del usuario autenticado
+    fun getAuthenticatedUserIMCHistory(): List<Map<String, String>>? {
+        val userId = getAuthenticatedUserId() ?: return null
+        return getIMCHistory(userId)
+    }
+
+    fun clearAuthenticatedUser() {
+        authenticatedUserId = null
+    }
 
 }
