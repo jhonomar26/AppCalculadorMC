@@ -2,7 +2,9 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import java.security.MessageDigest
+import kotlin.math.log
 
 class DatabaseHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -126,21 +128,20 @@ class DatabaseHelper(context: Context) :
 
     // Validar usuario: Existe o no :D
     // Validar usuario y guardar el ID si la autenticación es exitosa
-    fun validateUser(username: String, password: String): Boolean {
+    fun validateUser(username: String, password: String): Int? {
         val db = this.readableDatabase
         val hashedPassword = hashPassword(password)  // Hashear la contraseña ingresada
-        val query = "SELECT $COL_USER_ID FROM $TABLE_USERS WHERE $COL_USERNAME = ? AND $COL_PASSWORD = ?"
+        val query = "SELECT id FROM $TABLE_USERS WHERE username = ? AND password = ?"
         val cursor = db.rawQuery(query, arrayOf(username, hashedPassword))
 
-        // Si el usuario es válido, guarda su ID
-        val isValid = if (cursor.moveToFirst()) {
-            authenticatedUserId = cursor.getInt(cursor.getColumnIndexOrThrow(COL_USER_ID))
-            true
+        return if (cursor.moveToFirst()) {
+            val userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+            cursor.close()
+            userId
         } else {
-            false
+            cursor.close()
+            null  // Si no hay coincidencias, devuelve null
         }
-        cursor.close()
-        return isValid
     }
 
 
@@ -173,11 +174,8 @@ class DatabaseHelper(context: Context) :
     }
 
 
-
     // Obtener el ID del usuario autenticado
-    fun getAuthenticatedUserId(): Int? {
-        return authenticatedUserId
-    }
+
 
     private fun hashPassword(password: String): String {
         val md = MessageDigest.getInstance("SHA-256")
@@ -185,14 +183,28 @@ class DatabaseHelper(context: Context) :
         return hash.joinToString("") { "%02x".format(it) }
     }
 
-    // Obtener historial de IMC del usuario autenticado
-    fun getAuthenticatedUserIMCHistory(): List<Map<String, String>>? {
-        val userId = getAuthenticatedUserId() ?: return null
-        return getIMCHistory(userId)
+    fun getAuthenticatedUserId(context: Context): Int? {
+        // Accede a SharedPreferences usando el nombre que definiste para guardar el usuario
+        val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+
+        // Obtén el valor de "user_id". Si no existe, devuelve -1 como valor por defecto
+        val userId = sharedPreferences.getInt("user_id", -1)
+
+        // Si el valor es -1, significa que no hay usuario autenticado, devuelve null
+        return if (userId != -1) userId else null
     }
 
-    fun clearAuthenticatedUser() {
-        authenticatedUserId = null
+
+    // Obtener historial de IMC del usuario autenticado
+
+    fun clearAuthenticatedUser(context: Context) {
+        // Obtén una referencia a SharedPreferences a través del contexto
+        val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        // Edita SharedPreferences para eliminar el ID del usuario
+        val editor = sharedPreferences.edit()
+        editor.remove("user_id")
+        editor.apply()
     }
+
 
 }

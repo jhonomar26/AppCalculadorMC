@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -27,11 +28,20 @@ class SplashActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             databaseHelper = DatabaseHelper(this)
             // Verificar si el usuario está autenticado
-            if (databaseHelper.getAuthenticatedUserId() != null) {
+            val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
+            val userId = sharedPreferences.getInt(
+                "user_id",
+                -1
+            )  // -1 es el valor por defecto si no se encuentra el ID
+
+            if (userId != -1) {
+                Log.e("","El usuario si esta autenticado")
                 // Si está autenticado, dirigir a MainActivity
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             } else {
+                Log.e("","Usuario no autenticado")
+
                 // Si no está autenticado, dirigir a LoginActivity
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)

@@ -17,5 +17,13 @@
     <string name="fill_all_fields">Por favor, lleno los campos de usuario y contraseña</string>
     <string name="register">Registrarse</string>
     <string name="back_to_login">Volver al inicio de sesión</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="viewhistory">Ver historial</string>
+    <string name="fecha">Fecha</string>
+    <string name="peso">Peso</string>
+    <string name="altura">Altura</string>
+    <string name="imc">IMC</string>
+    <string name="concepto">Concepto</string>
+    <string name="historial_imc">Historial de usuario</string>
 
 </resources>

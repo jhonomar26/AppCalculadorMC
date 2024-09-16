@@ -18,5 +18,13 @@
     <string name="fill_all_fields">Please fill in the username and password fields</string>
     <string name="register">Register</string>
     <string name="back_to_login">Back to login</string>
+    <string name="logout">Log out</string>
+    <string name="viewhistory">View history</string>
+    <string name="fecha">Date</string>
+    <string name="peso">Weight</string>
+    <string name="altura">Height</string>
+    <string name="imc">iMC</string>
+    <string name="concepto">Concept</string>
+    <string name="historial_imc">"User history "</string>
 
 </resources>

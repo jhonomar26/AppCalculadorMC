@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Ejecución del botón una vez se le da click
+        // En el onCreate de LoginActivity, dentro del listener del botón de login
         loginButton.setOnClickListener {
             // Obtener los valores ingresados por el usuario
             val enteredUsername = usernameField.text.toString()
@@ -49,8 +49,15 @@ class LoginActivity : AppCompatActivity() {
 
             // Validar que el nombre de usuario y la contraseña no estén vacíos
             if (enteredUsername.isNotEmpty() && enteredPassword.isNotEmpty()) {
-                // Validación de usuario y contraseña en la base de datos
-                if (databaseHelper.validateUser(enteredUsername, enteredPassword)) {
+                // Obtener el ID del usuario validao
+                val userId = databaseHelper.validateUser(enteredUsername, enteredPassword)
+
+                if (userId != null) {
+                    // Guardar el ID del usuario en SharedPreferences
+                    val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.putInt("user_id", userId)
+                    editor.apply()
                     // Si la validación es correcta, abrir MainActivity
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
@@ -68,10 +75,16 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+
         registerButton.setOnClickListener {
             // Abrir la actividad de registro
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
     }
+}
+
+private fun Any.putInt(s: String, userId: Boolean) {
+
+
 }

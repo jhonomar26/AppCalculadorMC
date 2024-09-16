@@ -38,11 +38,17 @@ class MainActivity : AppCompatActivity() {
 
         databaseHelper = DatabaseHelper(this)
 
+        val btnHistorial: Button = findViewById(R.id.botonHistorial)
+        btnHistorial.setOnClickListener {
+            val intent = Intent(this, HistorialActivity::class.java)
+            startActivity(intent)
+        }
+
         // Botón de cerrar sesión
         val logoutButton = findViewById<Button>(R.id.botonCerrarSesion)
         logoutButton.setOnClickListener {
             // Cerrar sesión
-            databaseHelper.clearAuthenticatedUser()
+            databaseHelper.clearAuthenticatedUser(this)
             // Redirigir a la pantalla de Login
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
@@ -67,6 +73,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 // Si ambos valores son válidos, calcula el IMC (Índice de Masa Corporal)
                 val bmi = weight / (height * height)
+
                 // Llama a la función `updateUI` para mostrar los resultados en la interfaz
                 updateUI(bmi, textViewResultado, imageViewResultado)
                 // Guardar el historial en la base de datos
@@ -84,13 +91,18 @@ class MainActivity : AppCompatActivity() {
                     else -> "Obesidad"
                 }
 
+
                 // Guardar el historial en la base de datos
                 val dbHelper = DatabaseHelper(this)
-                val userId = 1  // Aquí deberías obtener el ID del usuario autenticado
-                dbHelper.insertIMCHistory(userId, currentDateTime, weight, height, bmi, concept)
+                val userId =
+                    databaseHelper.getAuthenticatedUserId(this) // Aquí deberías obtener el ID del usuario autenticado
+                if (userId != null) {
+                    dbHelper.insertIMCHistory(userId, currentDateTime, weight, height, bmi, concept)
+                }
             }
         }
     }
+
 
     // Función para actualizar la interfaz de usuario con el resultado del IMC y la categoría correspondiente
     private fun updateUI(bmi: Double, textViewResultado: TextView, imageViewResultado: ImageView) {
