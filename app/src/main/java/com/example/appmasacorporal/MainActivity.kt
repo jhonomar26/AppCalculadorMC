@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
             if (weight == null || height == null) {
                 // Si hay un error (por ejemplo, si alguno de los campos está vacío), muestra un mensaje de error
                 showError("Uno de los datos se encuentra vacío")
+                showError("Uno de los datos se encuentra vacío")
                 imageViewResultado.setImageDrawable(null)
                 textViewResultado.text = ""
 
