@@ -33,7 +33,6 @@ class SplashActivity : AppCompatActivity() {
                 "user_id",
                 -1
             )  // -1 es el valor por defecto si no se encuentra el ID
-
             if (userId != -1) {
                 Log.e("","El usuario si esta autenticado")
                 // Si está autenticado, dirigir a MainActivity

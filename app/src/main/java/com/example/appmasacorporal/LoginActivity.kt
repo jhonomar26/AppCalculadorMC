@@ -51,7 +51,6 @@ class LoginActivity : AppCompatActivity() {
             if (enteredUsername.isNotEmpty() && enteredPassword.isNotEmpty()) {
                 // Obtener el ID del usuario validao
                 val userId = databaseHelper.validateUser(enteredUsername, enteredPassword)
-
                 if (userId != null) {
                     // Guardar el ID del usuario en SharedPreferences
                     val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)

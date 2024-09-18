@@ -33,8 +33,6 @@ class DatabaseHelper(context: Context) :
         private const val COL_CONCEPT = "concept"
     }
 
-    //Funcion para devolver el hash de acuerdo a la contraseña
-
 
     //Esto solo se ejecutara la primera vez, para crear la base de datos
     override fun onCreate(db: SQLiteDatabase?) {
@@ -54,7 +52,7 @@ class DatabaseHelper(context: Context) :
                 + "$COL_IMC REAL, "
                 + "$COL_CONCEPT TEXT, "
                 + "FOREIGN KEY($COL_USER_ID_FK) REFERENCES $TABLE_USERS($COL_USER_ID))")
-
+        //Llamada segura:?, en caso de null
         db?.execSQL(createUsersTable)
         db?.execSQL(createHistoryTable)
     }
@@ -65,11 +63,19 @@ class DatabaseHelper(context: Context) :
         return db.delete(TABLE_USERS, null, null)
     }
 
+    fun deleteUser(id: String): Int {
+        val db = this.writableDatabase
+        // Ejecutar el delete sin cláusula WHERE eliminará todos los usuarios
+        return db.delete(TABLE_USERS, id, null)
+    }
+
 
     fun getAllUsers(): List<Map<String, String>> {
         val db = this.readableDatabase
         val query = "SELECT * FROM $TABLE_USERS"
+        //Ejecuta le setencia sql
         val cursor = db.rawQuery(query, null)
+        //Lista muteable, es decir, que la puedo modificar
         val userList = mutableListOf<Map<String, String>>()
 
         if (cursor.moveToFirst()) {
@@ -102,6 +108,7 @@ class DatabaseHelper(context: Context) :
             put(COL_USERNAME, username)
             put(COL_PASSWORD, hashPassword(password))  // Guardar la contraseña hasheada
         }
+        //returna el id de la fila recien creada en caso de que sea correcto
         return db.insert(TABLE_USERS, null, contentValues)
     }
 
@@ -123,6 +130,7 @@ class DatabaseHelper(context: Context) :
             put(COL_IMC, imc)
             put(COL_CONCEPT, concept)
         }
+        //  Devuelve el id de la historia recien creada
         return db.insert(TABLE_HISTORY, null, contentValues)
     }
 
@@ -171,12 +179,9 @@ class DatabaseHelper(context: Context) :
         cursor.close()
         //Esto es un lista, donde que cada elemento de la lista conrresponde a un diccionario
         return historyList
+        //[{"date_time: 01/04/2022 13:21:24"}]
     }
-
-
-    // Obtener el ID del usuario autenticado
-
-
+    //hashear la contraseña
     private fun hashPassword(password: String): String {
         val md = MessageDigest.getInstance("SHA-256")
         val hash = md.digest(password.toByteArray())
@@ -184,7 +189,6 @@ class DatabaseHelper(context: Context) :
     }
 
     fun getAuthenticatedUserId(context: Context): Int? {
-        // Accede a SharedPreferences usando el nombre que definiste para guardar el usuario
         val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
 
         // Obtén el valor de "user_id". Si no existe, devuelve -1 como valor por defecto
