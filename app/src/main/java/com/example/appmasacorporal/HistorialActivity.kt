@@ -22,9 +22,7 @@ class HistorialActivity : AppCompatActivity() {
         if (historial.isNullOrEmpty()) {
             val noDataRow = TableRow(this)
             val noDataView = TextView(this).apply {
-                text = "No hay historial disponible"
-                setPadding(8, 8, 8, 8)
-                setTextSize(16f)
+                text = getString(R.string.no_historial)
             }
             noDataRow.addView(noDataView)
             tableLayout.addView(noDataRow)

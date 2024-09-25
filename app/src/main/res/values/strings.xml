@@ -25,5 +25,6 @@
     <string name="imc">IMC</string>
     <string name="concepto">Concepto</string>
     <string name="historial_imc">Historial de usuario</string>
+    <string name="no_historial">No history available</string>
 
 </resources>
